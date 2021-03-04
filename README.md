@@ -1,5 +1,5 @@
 # Projeto-AED
-Projeto da disciplina de Algoritmo e Estrutura de Dados UFG - 2020/2
+Projeto da disciplina de Algoritmos e Estruturas de Dados - Engenharia de Software UFG/INF - 2020/2
 
 Integrantes do Grupo:
 - Amadeu Lee
