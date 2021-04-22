@@ -3,6 +3,7 @@
 #include <string.h>
 #include <ctype.h>
 #include <malloc.h>
+
 #include "functions.h"
 
 void inicializarLista(LISTA* l) {
@@ -74,7 +75,7 @@ void preencherDadosCliente(LISTA* l, PONT i) {
     suc = 0;
     while(suc == 0) {
         char cpf[20];
-        printf("Informe o CPF: ");
+        printf("Informe o CPF (FORMATO XXX.XXX.XXX-XX): ");
         scanf("%[^\n]%*c", cpf);
 
         if(strlen(cpf) == 14 && cpf[3] == '.' && cpf[7] == '.' && cpf[11] == '-') {
@@ -85,6 +86,26 @@ void preencherDadosCliente(LISTA* l, PONT i) {
             printf("CPF invalido. Tente novamente\n");
         }
     }
+
+    // Endereco (CEP)
+    suc = 0;
+    while(suc == 0) {
+        printf("Informe o CEP (FORMATO XXXXX-XXX): ");
+        char cep[20];
+        scanf("%[^\n]%*c", cep);
+
+        if(cep[5] == '-' && strlen(cep) == 9) {
+            suc = 1;
+            strcpy(i->reg.cep, cep);
+        }
+        else {
+            printf("CEP invalido. Tente novamente\n");
+        }
+    }
+
+    // Telefone
+    printf("Informe um numero de contato com o codigo de area: ");
+    scanf("%[^\n]%*c", i->reg.telefone);
 
 }
 
