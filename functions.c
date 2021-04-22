@@ -127,3 +127,24 @@ int criarCliente(LISTA* l) {
 
     return i->reg.ID;
 }
+
+void exibirCliente(LISTA *l){
+
+    PONT end = l->inicio;
+
+    while(end != NULL){
+        
+        printf("Código de ID: ......%d......\n", end->reg.ID);
+        printf("Nome: ....... %s .......\n", end->reg.nome);
+        printf("CPF: ........ %s .......\n", end->reg.cpf);
+        printf("Data de Nascimento: %d/%d/%d\n", end->reg.dataNasc.dia, end->reg.dataNasc.mes, end->reg.dataNasc.ano);
+        printf("CEP: ........ %s .......\n", end->reg.cep);
+        printf("Telefone: ... %s .......\n", end->reg.telefone);
+        printf("Saldo atual: R$%.2lf\n", end->reg.saldo);
+
+        end = end->prox;
+        
+    }
+    printf("\n\n");
+
+}
