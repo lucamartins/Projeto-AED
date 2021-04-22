@@ -1,7 +1,7 @@
 typedef struct {
-    int dia;
-    int mes;
-    int ano;
+    char dia;
+    char mes;
+    char ano;
 } NASC;
 
 typedef struct {
@@ -16,9 +16,9 @@ typedef struct {
     int ID;
     NASC dataNasc;
     double saldo;
-    double divida;
-    char* nome;
-    char* cpf;
+    double debitos;
+    char nome[60];
+    char cpf[15];
     ENDERECO endereco;
     char* telefone;
 } REGISTRO;
@@ -32,4 +32,13 @@ typedef ELEMENTO* PONT;
 
 typedef struct {
     PONT inicio;
+    int cntID;
 } LISTA;
+
+void inicializarLista(LISTA* l);
+
+int criarCliente(LISTA* l);
+
+void preencherDadosCliente(LISTA* l, PONT i);
+
+PONT buscarProxEndLivre(LISTA* l, PONT* ant);
