@@ -148,7 +148,7 @@ void exibirCliente(LISTA* l){
     printf("\n\n");
 }
 
-PONT buscarID(LISTA *l, int ID, PONT* ant){     //buscar o cliente pelo ID
+PONT buscarID(LISTA* l, int ID, PONT* ant){     //buscar o cliente pelo ID
 
     *ant = NULL;
     PONT end = l->inicio;
@@ -163,21 +163,57 @@ PONT buscarID(LISTA *l, int ID, PONT* ant){     //buscar o cliente pelo ID
     return NULL;
 }
 
-int removerCliente(LISTA* l){
+PONT buscarNome(LISTA* l, PONT* ant){       //buscar o cliente pelo nome
 
-    int ID;
+    *ant = NULL;
+    PONT end = l->inicio;
     
-    printf("Insira o ID do cliente a ser removido: ");
-    scanf("%d", &ID);
+    char nome[60];
+    printf("Insira o nome do cliente.\n");
+    scanf("%[^\n]%*c", nome);
 
-    PONT i, ant;
+    while(end != NULL){
 
-    i = buscarID(l, ID, &ant);
+        if(strcmp(end->reg.nome, nome) == 0){
+            return end;
+        }
+        *ant = end;
+        end = end->prox;
+    }
+    return NULL;
+}
 
-    if(i == NULL) return 0;
+int removerCliente(LISTA* l, int opcao){    //remover o cliente ou pelo ID ou pelo nome
 
-    if(ant == NULL) l->inicio = i->prox;
-    else ant->prox = i->prox;
-    free(i);    
-    return 1;
+    if(opcao == 1){
+
+        int ID;
+        printf("Insira o ID do cliente.\n");
+        scanf("%d", &ID);
+
+        PONT i, ant;
+
+        i = buscarID(l, ID, &ant);
+
+        if(i == NULL) return 0;
+
+        if(ant == NULL) l->inicio = i->prox;
+        else ant->prox = i->prox;
+        free(i);    
+        return 1;
+    }else if(opcao == 2){
+
+        PONT i, ant;
+
+        i = buscarNome(l, &ant);
+
+        if(i == NULL) return 0;
+
+        if(ant == NULL) l->inicio = i->prox;
+        else ant->prox = i->prox;
+        free(i);    
+        return 1;
+    }else{
+        return 0;
+    } 
 }
