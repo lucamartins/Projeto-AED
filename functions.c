@@ -128,7 +128,7 @@ int criarCliente(LISTA* l) {
     return i->reg.ID;
 }
 
-void exibirCliente(LISTA *l){
+void exibirCliente(LISTA* l){
 
     PONT end = l->inicio;
 
@@ -147,4 +147,19 @@ void exibirCliente(LISTA *l){
     }
     printf("\n\n");
 
+}
+
+PONT buscarID(LISTA *l, int ID, PONT* ant){
+
+    *ant = NULL;
+    PONT end = l->inicio;
+
+    while((end != NULL) && (end->reg.ID < ID)){
+        *ant = end;
+        end = end->prox;
+    }
+    if((end != NULL) && (end->reg.ID == ID)){
+        return end;
+    }
+    return NULL;
 }
