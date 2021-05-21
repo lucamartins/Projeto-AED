@@ -129,11 +129,9 @@ int criarCliente(LISTA* l) {
 }
 
 void exibirCliente(LISTA* l){
-
     PONT end = l->inicio;
 
     while(end != NULL){
-        
         printf("Código de ID: ......%d......\n", end->reg.ID);
         printf("Nome: ....... %s .......\n", end->reg.nome);
         printf("CPF: ........ %s .......\n", end->reg.cpf);
@@ -142,13 +140,12 @@ void exibirCliente(LISTA* l){
         printf("Telefone: ... %s .......\n", end->reg.telefone);
         printf("Saldo atual: R$%.2lf\n", end->reg.saldo);
 
-        end = end->prox;
-        
+        end = end->prox;   
     }
     printf("\n\n");
 }
 
-PONT buscarID(LISTA* l, int ID, PONT* ant){     //buscar o cliente pelo ID
+PONT buscarID(LISTA* l, int ID, PONT* ant){ //buscar o cliente pelo ID
 
     *ant = NULL;
     PONT end = l->inicio;
@@ -163,8 +160,7 @@ PONT buscarID(LISTA* l, int ID, PONT* ant){     //buscar o cliente pelo ID
     return NULL;
 }
 
-PONT buscarNome(LISTA* l, PONT* ant){       //buscar o cliente pelo nome
-
+PONT buscarNome(LISTA* l, PONT* ant){ // buscar o cliente pelo nome
     *ant = NULL;
     PONT end = l->inicio;
     
@@ -183,10 +179,8 @@ PONT buscarNome(LISTA* l, PONT* ant){       //buscar o cliente pelo nome
     return NULL;
 }
 
-int removerCliente(LISTA* l, int opcao){    //remover o cliente ou pelo ID ou pelo nome
-
+int removerCliente(LISTA* l, int opcao){ //remover o cliente ou pelo ID ou pelo nome
     if(opcao == 1){
-
         int ID;
         printf("Insira o ID do cliente.\n");
         scanf("%d", &ID);
@@ -201,7 +195,8 @@ int removerCliente(LISTA* l, int opcao){    //remover o cliente ou pelo ID ou pe
         else ant->prox = i->prox;
         free(i);    
         return 1;
-    }else if(opcao == 2){
+    }
+    else if(opcao == 2){
 
         PONT i, ant;
 
@@ -213,7 +208,8 @@ int removerCliente(LISTA* l, int opcao){    //remover o cliente ou pelo ID ou pe
         else ant->prox = i->prox;
         free(i);    
         return 1;
-    }else{
+    }
+    else{
         return 0;
     } 
 }
