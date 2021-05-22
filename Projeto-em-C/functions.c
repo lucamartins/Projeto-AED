@@ -110,7 +110,7 @@ void preencherDadosCliente(LISTA* l, PONT i) {
 }
 
 int criarCliente(LISTA* l) {
-    PONT ant, i = buscarProxEndLivre(&l, &ant);
+    PONT ant, i = buscarProxEndLivre(l, &ant);
 
     i = (PONT) malloc(sizeof(ELEMENTO));
 
@@ -128,7 +128,7 @@ int criarCliente(LISTA* l) {
     return i->reg.ID;
 }
 
-void exibirCliente(LISTA* l){
+void exibirClientes(LISTA* l){         //funcao para exibir os detalhes de todos os clientes cadastrados
     PONT end = l->inicio;
 
     while(end != NULL){
@@ -139,11 +139,61 @@ void exibirCliente(LISTA* l){
         printf("CEP: ........ %s .......\n", end->reg.cep);
         printf("Telefone: ... %s .......\n", end->reg.telefone);
         printf("Saldo atual: R$%.2lf\n", end->reg.saldo);
+        printf("Débitos: ....R$%2.lf\n\n", end->reg.debitos);
 
         end = end->prox;   
     }
     printf("\n\n");
 }
+
+void exibirConta(LISTA* l){             //Funcao para exibir detalhes de uma conta especifica
+    int opcao;
+    printf("Deseja acessar os detalhes da conta pelo nome ou pelo ID ?\n\n");
+    printf("1- Nome\n2- ID");
+    scanf("%d", &opcao);
+    
+    if(opcao == 1){             //opcao para procurar a conta pelo nome
+        PONT ant, end = buscarNome(l, &ant);
+        
+        if(end == NULL){
+            printf("Erro ! Cliente nao existente.\n");
+        }else{
+            printf("Detalhes da conta desejada: \n\n");
+            printf("Código de ID: ......%d......\n", end->reg.ID);
+            printf("Nome: ....... %s .......\n", end->reg.nome);
+            printf("CPF: ........ %s .......\n", end->reg.cpf);
+            printf("Data de Nascimento: %d/%d/%d\n", end->reg.dataNasc.dia, end->reg.dataNasc.mes, end->reg.dataNasc.ano);
+            printf("CEP: ........ %s .......\n", end->reg.cep);
+            printf("Telefone: ... %s .......\n", end->reg.telefone);
+            printf("Saldo atual: R$%.2lf\n", end->reg.saldo);
+            printf("Débitos: ....R$%2.lf\n\n", end->reg.debitos);
+        }
+    }else if(opcao == 2){       //opcao para procurar a conta pelo ID
+
+        int ID;
+        printf("Insira o ID do cliente: ");
+        scanf("%d", &ID);
+        PONT ant, end = buscarID(l, ID, &ant);
+        
+        if(end == NULL){
+            printf("Erro ! Cliente nao existente.\n");
+        }else{
+            printf("Detalhes da conta desejada: \n\n");
+            printf("Código de ID: ......%d......\n", end->reg.ID);
+            printf("Nome: ....... %s .......\n", end->reg.nome);
+            printf("CPF: ........ %s .......\n", end->reg.cpf);
+            printf("Data de Nascimento: %d/%d/%d\n", end->reg.dataNasc.dia, end->reg.dataNasc.mes, end->reg.dataNasc.ano);
+            printf("CEP: ........ %s .......\n", end->reg.cep);
+            printf("Telefone: ... %s .......\n", end->reg.telefone);
+            printf("Saldo atual: R$%.2lf\n", end->reg.saldo);
+            printf("Débitos: ....R$%2.lf\n\n", end->reg.debitos);
+        }
+    }else{
+        printf("Opcão não existe\n");
+    }
+    return;
+}
+
 
 PONT buscarID(LISTA* l, int ID, PONT* ant){ //buscar o cliente pelo ID
 
@@ -213,3 +263,4 @@ int removerCliente(LISTA* l, int opcao){ //remover o cliente ou pelo ID ou pelo 
         return 0;
     } 
 }
+
