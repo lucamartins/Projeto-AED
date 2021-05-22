@@ -377,3 +377,56 @@ int inserirDividas(LISTA* l){
     }
     return 1;
 }
+
+int quitarDividas(LISTA* l){
+
+    int ID, opcao;
+    printf("Insira o ID do cliente: ");
+    scanf("%d", &ID);
+
+    PONT ant, end = buscarID(l, ID, &ant);
+
+    if(end == NULL){
+        printf("cliente nao existente.\n");
+        return 0;
+    }
+    printf("Voce deseja quitar a sua divida em uma vez ou deseja pagar uma parcela?\n\n");
+    printf("1- Pagar tudo a vista\n2- Pagar uma parcela");
+    scanf("%d", &opcao);
+    while(1){
+        if(opcao == 1){
+            
+            if(end->reg.saldo < end->reg.debitos){
+                printf("Saldo insuficiente.\n");
+                return 0;
+            }
+            double aux = end->reg.debitos;
+            end->reg.saldo = end->reg.saldo - aux;
+            end->reg.debitos = end->reg.debitos + aux;
+            printf("Divida total quitada com sucesso.\n\n");
+            return 1;
+        }
+        else if(opcao == 2){
+            int parcelas;
+            printf("Quantas vezes deseja dividir a divida?\n");
+            scanf("%d", &parcelas);
+
+            double aux;
+            aux = end->reg.debitos / parcelas;
+
+            if(end->reg.saldo < aux){
+                printf("Saldo insuficiente.\n");
+                return 0;
+            }
+            end->reg.saldo = end->reg.saldo - aux;
+            end->reg.debitos = end->reg.debitos + aux;
+
+            printf("Parcela quitada com sucesso.\n");
+
+            return 1;
+        }else{
+            printf("Opcao nao existente.\n");
+        }
+    }
+
+}
