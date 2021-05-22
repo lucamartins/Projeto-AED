@@ -265,87 +265,115 @@ int removerCliente(LISTA* l, int opcao){ //remover o cliente ou pelo ID ou pelo 
 }
 
 int atualizarDados(LISTA* l){       //funcao para atualizar os dados do cliente escolhido
-    int opcao, suc;
-    printf("Deseja atualizar os dados do cliente por:\n\n1-Nome\n2-ID");
-    scanf("%d", &opcao);
+    int ID, suc;
+    printf("Insira o ID do cliente: ");
+    scanf("%d", &ID);
 
-    if(opcao == 1){             //opcao para procurar a conta pelo nome
-        PONT ant, i = buscarNome(l, &ant);
-        
-        if(i == NULL){
-            printf("Erro ! Cliente nao existente.\n");
-            return 0;
-        }else{
-            int n;
-            printf("Qual dados voce deseja atualizar?\n\n");
-            printf("1- CPF\n2- Data de nascimento\n3- Telefone de contato\n4- CEP\n\n");
-            scanf("%d", &n);
+               
+    PONT ant, i = buscarID(l, ID, &ant);
+    
+    if(i == NULL){
+        printf("Erro ! Cliente nao existente.\n");
+        return 0;
+    }else{
+        int n;
+        printf("Qual dados voce deseja atualizar?\n\n");
+        printf("1- CPF\n2- Data de nascimento\n3- Telefone de contato\n4- CEP\n\n");
+        scanf("%d", &n);
 
-            if(n == 1){         //atualizando o cpf
-                suc = 0;
+        if(n == 1){         //atualizando o cpf
+            suc = 0;
 
-                while(suc == 0) {
-                    char cpf[20];
-                    printf("Informe o CPF (FORMATO XXX.XXX.XXX-XX): ");
-                    scanf("%[^\n]%*c", cpf);
+            while(suc == 0) {
+                char cpf[20];
+                printf("Informe o CPF (FORMATO XXX.XXX.XXX-XX): ");
+                scanf("%[^\n]%*c", cpf);
 
-                    if(strlen(cpf) == 14 && cpf[3] == '.' && cpf[7] == '.' && cpf[11] == '-') {
-                        suc = 1;
-                        strcpy(i->reg.cpf, cpf);
-                        return 1;
-                    }
-                    else {
-                        printf("CPF invalido. Tente novamente\n");
-                        return 0;
-                    }
-                }
-            }
-            else if(n == 2){        //atualizar a data de nascimento
-                suc = 0;
-                while(suc == 0) {
-                int dia, mes, ano;
-                char barra1, barra2;
-                scanf("%d %c %d %c %d", &dia, &barra1, &mes, &barra2, &ano);
-                if(dia >= 1 && dia <= 31 && mes >= 1 && mes <= 12 && ano >= 0 && barra1 == '/' && barra2 == '/') {
+                if(strlen(cpf) == 14 && cpf[3] == '.' && cpf[7] == '.' && cpf[11] == '-') {
                     suc = 1;
-                    i->reg.dataNasc.dia = dia;
-                    i->reg.dataNasc.mes = mes;
-                    i->reg.dataNasc.ano = ano;
+                    strcpy(i->reg.cpf, cpf);
                     return 1;
-                }else {
-                printf("Data invalida. Tente novamente\n");
-                return 0;
+                }
+                else {
+                    printf("CPF invalido. Tente novamente\n");
+                    return 0;
                 }
             }
         }
-            else if(n == 3){        //atualizar o telefone
-                printf("Informe um numero de contato com o codigo de area: ");
-                scanf("%[^\n]%*c", i->reg.telefone);
+        else if(n == 2){        //atualizar a data de nascimento
+            suc = 0;
+            while(suc == 0) {
+            int dia, mes, ano;
+            char barra1, barra2;
+            scanf("%d %c %d %c %d", &dia, &barra1, &mes, &barra2, &ano);
+            if(dia >= 1 && dia <= 31 && mes >= 1 && mes <= 12 && ano >= 0 && barra1 == '/' && barra2 == '/') {
+                suc = 1;
+                i->reg.dataNasc.dia = dia;
+                i->reg.dataNasc.mes = mes;
+                i->reg.dataNasc.ano = ano;
                 return 1;
-            }
-            else if(n == 4){       //atualizar o CEP
-
-                suc = 0;
-                while(suc == 0) {
-                    printf("Informe o CEP (FORMATO XXXXX-XXX): ");
-                    char cep[20];
-                    scanf("%[^\n]%*c", cep);
-
-                    if(cep[5] == '-' && strlen(cep) == 9) {
-                        suc = 1;
-                        strcpy(i->reg.cep, cep);
-                        return 1;
-                    }
-                    else {
-                        printf("CEP invalido. Tente novamente\n");
-                        return 0;
-                    }
-                }
-            }
-            else{
-                printf("Opcao nao existe!\n");
-                return 0;
+            }else {
+            printf("Data invalida. Tente novamente\n");
+            return 0;
             }
         }
     }
+        else if(n == 3){        //atualizar o telefone
+            printf("Informe um numero de contato com o codigo de area: ");
+            scanf("%[^\n]%*c", i->reg.telefone);
+            return 1;
+        }
+        else if(n == 4){       //atualizar o CEP
+
+            suc = 0;
+            while(suc == 0) {
+                printf("Informe o CEP (FORMATO XXXXX-XXX): ");
+                char cep[20];
+                scanf("%[^\n]%*c", cep);
+
+                if(cep[5] == '-' && strlen(cep) == 9) {
+                    suc = 1;
+                    strcpy(i->reg.cep, cep);
+                    return 1;
+                }
+                else {
+                    printf("CEP invalido. Tente novamente\n");
+                    return 0;
+                }
+            }
+        }
+        else{
+            printf("Opcao nao existe!\n");
+            return 0;
+        }
+    }
+    
+}
+
+int inserirDividas(LISTA* l){
+
+    int ID, suc;
+    double dividas;
+
+    printf("Insira o ID do cliente :");
+    scanf("%d", &ID);
+
+    PONT ant, end = buscarID(l, ID, &ant);
+    if(end == NULL){
+        printf("Cliente nao existente!\n");
+        return 0;
+    }
+    suc = 0;
+    while(suc == 0){
+        printf("Insira o valor de dividas (positivo): ");
+        scanf("%lf", &dividas);
+        if(dividas < 0){
+            printf("Voce inseriu um valor negativo, tente novamente.\n");
+        }else{
+            end->reg.debitos = end->reg.debitos - dividas;
+            printf("Debito inserido com sucesso\n");
+            suc = 1;
+        }
+    }
+    return 1;
 }
