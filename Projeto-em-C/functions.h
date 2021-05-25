@@ -29,8 +29,24 @@ typedef struct {
 
 void inicializarLista(LISTA* l);
 
-int criarCliente(LISTA* l);
+PONT buscarProxEndLivre(LISTA* l, PONT* ant);
 
 void preencherDadosCliente(LISTA* l, PONT i);
 
-PONT buscarProxEndLivre(LISTA* l, PONT* ant);
+PONT buscarID(LISTA* l, int ID, PONT* ant);
+
+PONT buscarNome(LISTA* l, PONT* ant);
+
+int criarCliente(LISTA* l); // op1
+
+void exibirClientes(LISTA* l); // op2
+
+void exibirConta(LISTA* l); // op3
+
+int atualizarDados(LISTA* l); // op4
+
+int inserirDividas(LISTA* l); // op5
+
+int quitarDividas(LISTA* l); // op6
+
+int removerCliente(LISTA* l); // op7
