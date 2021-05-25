@@ -1,7 +1,11 @@
+import { Account } from "./components/Account";
+import { GlobalStyle } from "./styles";
+
 export function App() {
   return (
     <>
-      <h1>Olá</h1>
+      <Account />
+      <GlobalStyle />
     </>
   );
 }
