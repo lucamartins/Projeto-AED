@@ -433,18 +433,19 @@ export function  Account() {
         return(
             <>
                 <LoginContainer>
-                    <SignUp isWrong={isPasswordWrong} >
+                    <SignUp isWrong={isPasswordWrong} onSubmit={(e)=> createAccount(e) }>
                         <h2>Criar nova conta</h2>
                         <input placeholder="Digite seu Nome Completo" type="text" required name="name" onChange={()=> {setIsPasswordWrong(false); setIsCpfWrong(false)}}/>
                         <input placeholder="Digite seu CPF" type="text" maxLength={11} minLength={11} required name="cpf" onChange={()=> {setIsPasswordWrong(false); setIsCpfWrong(false)}}/>
                         <input placeholder="Digite a sua senha" type="password" name="password" required onChange={()=> {setIsPasswordWrong(false); setIsCpfWrong(false)}}/>
                         <input placeholder="Confirme a sua senha" type="password" name="password2" required onChange={()=> {setIsPasswordWrong(false); setIsCpfWrong(false)}}/>
                         <button type="submit">Enviar para análise</button>
-                        <button type="button" >Voltar</button>
+                        <button type="button" onClick={cancelsignup}>Voltar</button>
                     </SignUp>
                 </LoginContainer>
                 <Modal 
                     isOpen={isTransactionModalOpen}
+                    onRequestClose={handleCloseTransactionModal}
                     overlayClassName="react-modal-overlay"
                     className="react-modal-content"
                 >
