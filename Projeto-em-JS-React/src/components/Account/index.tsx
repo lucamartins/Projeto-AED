@@ -125,11 +125,13 @@ export function  Account() {
                     password: password.value,
                     transactions: []
                 }
+                handleOpenTransactionModal()
                 console.log([...bank, newAccount])
                 setBank([...bank, newAccount])
                 setCreateBool(true)
                 setTimeout(() => setStep(1), 3000);
                 setTimeout(() => setCreateBool(false), 6000);
+                setTimeout(handleCloseTransactionModal, 6000);
             }else{
                 setIsPasswordWrong(true);
             }
@@ -399,7 +401,11 @@ export function  Account() {
                                 <p>Entradas</p>
                                 <img src={incomeImg} alt="Entradas"/>
                             </header>
-                            <strong> 0
+                            <strong>
+                                {new Intl.NumberFormat('pt-BR',{
+                                    style: 'currency',
+                                    currency: 'BRL'
+                                }).format(summary.deposits)}
                             </strong>
                         </div>
                         <div>
@@ -407,7 +413,11 @@ export function  Account() {
                                 <p>Saídas</p>
                                 <img src={outcomeImg} alt="Saídas"/>
                             </header>
-                            <strong>- R$ 27
+                            <strong>- 
+                                {new Intl.NumberFormat('pt-BR',{
+                                    style: 'currency',
+                                    currency: 'BRL'
+                                }).format(summary.withdraws)}
                             </strong>
                         </div>
                         <div className="highlight-background">
@@ -415,7 +425,11 @@ export function  Account() {
                                 <p>Saldo Total</p>
                                 <img src={totalImg} alt="Total"/>
                             </header>
-                            <strong>- R$ 27
+                            <strong>
+                                {new Intl.NumberFormat('pt-BR',{
+                                    style: 'currency',
+                                    currency: 'BRL'
+                                }).format(summary.total)}
                             </strong>
                         </div>
                     </SummaryContainer>
@@ -431,12 +445,21 @@ export function  Account() {
                             </thead>
 
                             <tbody>
-                                <tr>
-                                    <td>Netflix</td>
-                                    <td className='withdraw'>R$ 27</td>
-                                    <td>Cobrança</td>
-                                    <td className='withdraw'>21/05</td>
-                                </tr>
+                                {currentAccount.transactions.map(transaction => (
+                                    <tr key={transaction.title}>
+                                        <td>{transaction.title}</td>
+                                        <td className={transaction.type}>
+                                            {new Intl.NumberFormat('pt-BR',{
+                                                style: 'currency',
+                                                currency: 'BRL'
+                                            }).format(transaction.amount)}
+                                        </td>
+                                        <td>{transaction.category}</td>
+                                        <td className={transaction.type}>
+                                            {new Intl.DateTimeFormat('pt-BR').format(transaction.createdAt)}
+                                        </td>
+                                    </tr>
+                                ))}
                             </tbody>
                         </table>
                     </TransactionTableContainer>
@@ -454,8 +477,14 @@ export function  Account() {
                         <h2>Criar nova conta</h2>
                         <input placeholder="Digite seu Nome Completo" type="text" required name="name" onChange={()=> {setIsPasswordWrong(false); setIsCpfWrong(false)}}/>
                         <input placeholder="Digite seu CPF" type="text" maxLength={11} minLength={11} required name="cpf" onChange={()=> {setIsPasswordWrong(false); setIsCpfWrong(false)}}/>
+                        {isCpfWrong &&(
+                            <h3>CPF já cadastrado, tente novamente</h3>
+                        )}
                         <input placeholder="Digite a sua senha" type="password" name="password" required onChange={()=> {setIsPasswordWrong(false); setIsCpfWrong(false)}}/>
                         <input placeholder="Confirme a sua senha" type="password" name="password2" required onChange={()=> {setIsPasswordWrong(false); setIsCpfWrong(false)}}/>
+                        {isPasswordWrong && (
+                            <h3>Senha não confere, tente novamente</h3>
+                        )}
                         <button type="submit">Enviar para análise</button>
                         <button type="button" onClick={cancelsignup}>Voltar</button>
                     </SignUp>
