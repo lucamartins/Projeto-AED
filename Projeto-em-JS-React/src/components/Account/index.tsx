@@ -281,12 +281,13 @@ export function  Account() {
                         <h2>Olá, Seja bem vindo</h2>
                         <input placeholder={isCpfWrong? "CPF não encontrado" : "Digite seu CPF"} type="number" maxLength={11}  value={cpf} onChange={(e) => {if(e.target.value.length<12)setCpf(e.target.value); setIsCpfWrong(false) }} />
                         <input placeholder={isPasswordWrong ? "Senha incorreta":"Digite a sua senha" } className="senha" value={password} type="password" onChange={(e) => setPassword(e.target.value)}/>
-                        <button type="button" onClick={()=> console.log('doido')}>Login</button>
+                        <button type="button" onClick={()=> loginAccount()}>Login</button>
                         <button type="button" onClick={()=> {setStep(3); setIsCpfWrong(false)}}>Criar nova conta</button>
                     </LoginForm>
                 </LoginContainer>
                 <Modal 
                     isOpen={isTransactionModalOpen}
+                    onRequestClose={handleCloseTransactionModal}
                     overlayClassName="react-modal-overlay"
                     className="react-modal-content"
                 >   
