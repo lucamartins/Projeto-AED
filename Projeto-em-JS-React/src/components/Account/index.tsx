@@ -299,21 +299,38 @@ export function  Account() {
     }
 
     if(step===2){   
+        const summary = currentAccount.transactions.reduce((acc, transaction)=>{
+            if(transaction.type==='deposit'){
+                acc.deposits += transaction.amount;
+                acc.total += transaction.amount;
+            }else{
+                acc.withdraws += transaction.amount;
+                acc.total -= transaction.amount;
+            }
+    
+            return acc;
+        },{
+            deposits: 0,
+            withdraws: 0,
+            total: 0,
+        })
+        const current = bank.find((account)=>account.cpf === pixDestination)
         return(
             <>
                 <HeaderContainer>
-                    <Content>
+                    <Content onSubmit={()=>handleCreateTransaction()}>
                         <img src={logoImg} alt="AJL Bank"/>
-                        <h1>Olá, Luca</h1>
-                        <button type="button">
+                        <h1>Olá, {currentAccount.name}</h1>
+                        <button type="button" onClick={handleOpenTransactionModal}>
                             Nova operação
                         </button>
                         <Modal 
                             isOpen={isTransactionModalOpen}
+                            onRequestClose={handleCloseTransactionModal}
                             overlayClassName="react-modal-overlay"
                             className="react-modal-content"
                         >
-                            <button type="button" className="react-modal-close">
+                            <button type="button" onClick={handleCloseTransactionModal} className="react-modal-close">
                                 <img src={closeImg} alt="Fechar modal" />
                             </button>
                             <ModalContainer isWrong={isPasswordWrong} isTicketWrong={isTicketWrong} isPixCpfWrong={isPixCpfWrong}>
@@ -341,13 +358,13 @@ export function  Account() {
                                             <h3>Não são permitidas operações com valores negativos</h3>
                                         )}
                                         {isNotMoneyEnough && (
-                                            <h3>Saldo insuficiente! Valor disponível na conta: R$ 0</h3>
+                                            <h3>Saldo insuficiente! Valor disponível na conta: R$ {summary.total}</h3>
                                         )}
                                         {type==='transferencia' && (
                                             <input placeholder={isPixCpfWrong? "CPF não cadastrado" : "CPF do destinatário"} value={pixDestination} className="pix" type="number" maxLength={11} minLength={11} onChange={(e) => {if(e.target.value.length<12)setPixDestination(e.target.value); setIsPixCpfWrong(false)}} required/>
                                         )}
                                         <input placeholder={isPasswordWrong ? "Senha incorreta":"Digite a sua senha" }value={password} className="senha" type="password" required onChange={(e) => {setPassword(e.target.value); setIsPasswordWrong(false)}}/>
-                                        <button type="button" >Continuar</button>
+                                        <button type="button" onClick={()=> confirmPassword()}>Continuar</button>
                                     </>
                                 )}
                                 {modalStep===2 && type==="encerramento de conta" && (
@@ -359,15 +376,15 @@ export function  Account() {
                                 {modalStep===3 && (
                                     <>
                                         {type==="encerramento de conta" && (<h2>Deseja mesmo encerrar a sua conta?</h2>)}
-                                        {type!=="encerramento de conta" && (<h2>Confirmar {type} de R$ {amount} ?</h2>)}
-                                        <button type="button" >Confirmar operação</button>
-                                        <button type="button" >Cancelar operação</button>
+                                        {type!=="encerramento de conta" && (<h2>Confirmar {type} de R$ {amount} {type==='transferencia'?`para ${current?.name}`:''}?</h2>)}
+                                        <button type="button" onClick={()=> handleCreateTransaction(true)}>Confirmar operação</button>
+                                        <button type="button" onClick={()=> handleCreateTransaction(false)}>Cancelar operação</button>
                                     </>
                                 )}
                                 {modalStep===4 && (
                                     <>
                                         {isCanceled===false && isCpfWrong===false && <h2>Operação de {type} feita com sucesso!! Aguarde...Você será redirecionado</h2>}
-                                        {isCanceled===false && isCpfWrong===true && (<><h2>Falha na operação de {type}</h2><h2>Valor disponível na conta : R$ 0</h2><h2>Por favor, zere a conta</h2></>)}
+                                        {isCanceled===false && isCpfWrong===true && (<><h2>Falha na operação de {type}</h2><h2>Valor disponível na conta : R$ {summary.total}</h2><h2>Por favor, zere a conta</h2></>)}
                                         {isCanceled===true && <h2>Operação de {type} cancelada. Aguarde...Você será redirecionado</h2>}
                                     </>
                                 )}
@@ -398,7 +415,7 @@ export function  Account() {
                                 <p>Saldo Total</p>
                                 <img src={totalImg} alt="Total"/>
                             </header>
-                            <strong>R$ 27
+                            <strong>- R$ 27
                             </strong>
                         </div>
                     </SummaryContainer>
@@ -423,7 +440,7 @@ export function  Account() {
                             </tbody>
                         </table>
                     </TransactionTableContainer>
-                    <button type="button">Log out</button>
+                    <button type="button" onClick={logout}>Log out</button>
                 </BodyContainer>
             </>
         )
