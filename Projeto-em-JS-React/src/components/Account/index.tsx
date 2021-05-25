@@ -53,10 +53,20 @@ export function  Account() {
 
     function handleOpenTransactionModal() {
         setIsTransactionModalOpen(true);
+        setPassword('')
     }
 
     function handleCloseTransactionModal() {
         setIsTransactionModalOpen(false);
+        setModalStep(1);
+        setIsPasswordWrong(false);
+        setIsCpfWrong(false)
+        setIsTicketWrong(false)
+        setIsPixCpfWrong(false)
+        setPixDestination('')
+        setIsNotMoneyEnough(false)
+        setIsNegative(false)
+        setTicket('')
     }
 
     function changeStep(e : any) {
@@ -183,6 +193,83 @@ export function  Account() {
                 setPassword('')
             }
         }
+    }
+
+    function cancelsignup() {
+        setIsPasswordWrong(false)
+        setIsCpfWrong(false)
+        setStep(1)
+        setCpf('')
+        setPassword('')
+    }
+
+    function handleCreateTransaction(value=false) {
+        setIsCanceled(!value);
+        setModalStep(4)
+        if(value!==false){
+            if(type==="encerramento de conta"){
+                const summary = currentAccount.transactions.reduce((acc, transaction)=>{
+                    if(transaction.type==='deposit'){
+                        acc.total += transaction.amount;
+                    }else{
+                        acc.total -= transaction.amount;
+                    }
+            
+                    return acc;
+                },{
+                    total: 0,
+                })  
+                if(summary.total!==0){
+                    setIsCpfWrong(true)
+                    setTimeout(handleCloseTransactionModal, 3000);
+                }else{
+                    logout()
+                    setTimeout(handleCloseTransactionModal, 3000);
+                }
+            }else{
+                const transaction = {
+                    title: transactionName,
+                    amount,
+                    type: transactionType,
+                    category: type,
+                    createdAt: new Date(),
+                }
+                const temp = [...currentAccount.transactions, transaction]
+                temp.sort( ( a: any, b: any) =>{
+                    let x = a.createdAt
+                    let y = b.createdAt
+                    return x===y ? 0 : x < y ? 1: -1;
+                })
+                setCurrentAccount( account => ({
+                    ...account,
+                    transactions: temp
+                }))
+                if(type==="transferencia"){
+                    const current = bank.find((account)=>account.cpf === pixDestination)
+                    const pixReceive = {
+                        title: `Pix de ${currentAccount.name}`,
+                        amount,
+                        type: 'deposit',
+                        category: "transferencia",
+                        createdAt: new Date(),
+                    }
+                    current?.transactions.push(pixReceive)
+                    current?.transactions.sort( ( a: any, b: any) =>{
+                        let x = a.createdAt
+                        let y = b.createdAt
+                        return x===y ? 0 : x < y ? 1: -1;
+                    })
+                    setBank( accounts => {
+                        const temp = accounts.filter((account)=>account.cpf !== cpf)
+                        if(current)
+                            temp.push(current)
+                        return(
+                            temp
+                        )
+                    })
+                }
+            }
+        }setTimeout(handleCloseTransactionModal, 3000);
     }
 
     if(step===1){
