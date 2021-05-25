@@ -51,6 +51,14 @@ export function  Account() {
         {} as AccountProps
     )
 
+    function handleOpenTransactionModal() {
+        setIsTransactionModalOpen(true);
+    }
+
+    function handleCloseTransactionModal() {
+        setIsTransactionModalOpen(false);
+    }
+
     function changeStep(e : any) {
         setType(e.target.id)
         if(e.target.id==='deposito') setTransactionType('deposit')
@@ -79,6 +87,22 @@ export function  Account() {
         }
     }
 
+    function logout() {
+        setBank( accounts => {
+            const temp = accounts.filter((account)=>account.cpf !== cpf)
+            if(type!=="encerramento de conta"){
+                temp.push(currentAccount)
+            }
+            return(
+                temp
+            )
+        })
+        setStep(1)
+        setCpf('')
+        setPassword('')
+        setIsCpfWrong(false)
+    }
+
     function createAccount(e : any) {
         e.preventDefault()
         const {name , cpf, password , password2} = e.target
@@ -101,6 +125,63 @@ export function  Account() {
             }
         }else{
             setIsCpfWrong(true)
+        }
+    }
+
+    function confirmPassword(){
+        const summary = currentAccount.transactions.reduce((acc, transaction)=>{
+            if(transaction.type==='deposit'){
+                acc.total += transaction.amount;
+            }else{
+                acc.total -= transaction.amount;
+            }
+    
+            return acc;
+        },{
+            total: 0,
+        })
+        if(amount<0){
+            setIsNegative(true)
+        }else if(transactionType==='withdraw' && summary.total<amount){
+            setIsNotMoneyEnough(true)
+        }else{
+            if(password===currentAccount.password){
+                if(type==='pagamento'){
+                    if(ticket==='123456789'){
+                        setModalStep(3)
+                        setPassword('')
+                        setTicket('')
+                        setAmount(167)
+                    }else if(ticket==='987654321'){
+                        setModalStep(3)
+                        setPassword('')
+                        setTicket('')
+                        setAmount(379)
+                    }
+                    else{
+                        setTicket('')
+                        setPassword('')
+                        setIsTicketWrong(true)
+                    }
+                
+                }else if(type==="transferencia"){
+                    const current = bank.find((account)=>account.cpf === pixDestination)
+                    if(current){
+                        setModalStep(3)
+                        setPassword('')
+                    }else{
+                        setPixDestination('')
+                        setPassword('')
+                        setIsPixCpfWrong(true)
+                    }
+                }else{
+                    setModalStep(3)
+                    setPassword('')
+                }
+            }else{
+                setIsPasswordWrong(true)
+                setPassword('')
+            }
         }
     }
 
