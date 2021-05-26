@@ -1,1 +1,5 @@
-cd C:\Users\lucas\Desktop\Projeto-em-C && gcc main.c functions.c -o app.exe && app.exe
+Para compilar e executar o nosso programa basta executar a seguinte linha de codigo no terminal:
+
+cd ***EnderecoAtePROJETO-EM-C*** && gcc main.c functions.c -o app.exe && app.exe
+
+Observe que ***EnderecoAtePROJETO-EM-C*** deve ser substituido pelo diretorio ate a pasta 'Projeto-Em-C' em seu computador.
