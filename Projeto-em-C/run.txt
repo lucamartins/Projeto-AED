@@ -1,5 +1,6 @@
 Para compilar e executar o nosso programa basta executar a seguinte linha de codigo no terminal:
 
-cd ***EnderecoAtePROJETO-EM-C*** && gcc main.c functions.c -o app.exe && app.exe
+cd ***EnderecoAtePROJETO-EM-C*** && gcc main.c functions2.c -o app.exe && app.exe
 
-Observe que ***EnderecoAtePROJETO-EM-C*** deve ser substituido pelo diretorio ate a pasta 'Projeto-Em-C' em seu computador.
+Observe que ***EnderecoAtePROJETO-EM-C*** deve ser substituido pelo diretorio ate a pasta 'Projeto-em-C' em seu computador. Por exemplo: 
+cd C:\Users\lucas\Documents\Github\Projeto-AED\Projeto-em-C && gcc main.c functions2.c -o app.exe && app.exe
