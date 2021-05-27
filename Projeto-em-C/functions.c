@@ -6,12 +6,16 @@
 
 #include "functions.h"
 
-void inicializarLista(LISTA* l) {
+//
+// Funcoes auxiliares
+//
+
+void inicializarLista(LISTA* l){
     l->inicio = NULL;
     l->cntID = 0;
 }
 
-PONT buscarProxEndLivre(LISTA* l, PONT* ant) {
+PONT buscarProxEndLivre(LISTA* l, PONT* ant){
     *ant = NULL;
     PONT atual = l->inicio;
 
@@ -23,31 +27,39 @@ PONT buscarProxEndLivre(LISTA* l, PONT* ant) {
     return atual;
 }
 
-int criarCliente(LISTA* l) {
-    system("cls");
-    printf("= = = = = CRIAR NOVO CLIENTE = = = = =\n");
+PONT buscarPeloID(LISTA* l, int ID, PONT* ant){
+    *ant = NULL;
+    PONT end = l->inicio;
 
-    PONT ant, i = buscarProxEndLivre(l, &ant);
-    i = (PONT) malloc(sizeof(ELEMENTO));
-
-    preencherDadosCliente(l, i);    
-
-    if(ant == NULL) {
-        i->prox = l->inicio;
-        l->inicio = i;
+    while((end != NULL) && (end->reg.ID < ID)){
+        *ant = end;
+        end = end->prox;
     }
-    else {
-        i->prox = ant->prox;
-        ant->prox = i;
+    if((end != NULL) && (end->reg.ID == ID)){
+        return end;
     }
-
-    printf("\n\n@ Cliente criado com sucesso!\n\n");
-    system("pause");
-
-    return i->reg.ID;
+    return NULL;
 }
 
-void preencherDadosCliente(LISTA* l, PONT i) {
+PONT lerEbuscarNome(LISTA* l, PONT* ant){
+    *ant = NULL;
+    PONT end = l->inicio;
+    
+    char nome[60];
+    getchar();
+    printf("Insira o nome do cliente: ");
+    scanf("%[^\n]%*c", nome);
+
+    while(end != NULL){
+        if(strcmp(end->reg.nome, nome) == 0) return end;
+ 
+        *ant = end;
+        end = end->prox;
+    }
+    return NULL;
+}
+
+void preencherDadosCliente(LISTA* l, PONT i){
     // Variavel de controle para sair do while loop
     int suc;
 
@@ -147,6 +159,61 @@ void preencherDadosCliente(LISTA* l, PONT i) {
     scanf("%[^\n]%*c", i->reg.telefone);
 }
 
+PONT encontrarClienteMenu(LISTA* l, PONT* ant){
+    printf("1 -- Procurar cliente atrave do nome\n");
+    printf("2 -- Procurar cliente atraves do ID\n");
+
+    int opcao;
+    printf("\n# Informe a opcao desejada: ");
+    scanf("%d", &opcao);
+
+    while(opcao != 1 && opcao != 2) {
+        printf("*Opcao invalida. Tente novamente: ");
+        scanf("%d", &opcao);
+    }
+    
+    PONT end;
+
+    if(opcao == 1) end = lerEbuscarNome(l, ant);
+
+    else if(opcao == 2){ // Opcao para procurar a conta pelo ID
+        int ID;
+        printf("\n# Insira o ID do cliente: ");
+        scanf("%d", &ID);
+        end = buscarPeloID(l, ID, ant);
+    }
+    
+    return end;
+}
+
+//
+// Funcoes de acesso direto pelo main
+//
+
+int criarCliente(LISTA* l) {
+    system("cls");
+    printf("= = = = = CRIAR NOVO CLIENTE = = = = =\n");
+
+    PONT ant, i = buscarProxEndLivre(l, &ant);
+    i = (PONT) malloc(sizeof(ELEMENTO));
+
+    preencherDadosCliente(l, i);    
+
+    if(ant == NULL) {
+        i->prox = l->inicio;
+        l->inicio = i;
+    }
+    else {
+        i->prox = ant->prox;
+        ant->prox = i;
+    }
+
+    printf("\n\n@ Cliente criado com sucesso!\n\n");
+    system("pause");
+
+    return i->reg.ID;
+}
+
 void exibirClientes(LISTA* l){
     system("cls");
     printf("= = = = = LISTA DE CLIENTES = = = = =\n");
@@ -203,73 +270,14 @@ void procurarCliente(LISTA* l){
     system("pause");
 }
 
-PONT buscarID(LISTA* l, int ID, PONT* ant){
-    *ant = NULL;
-    PONT end = l->inicio;
-
-    while((end != NULL) && (end->reg.ID < ID)){
-        *ant = end;
-        end = end->prox;
-    }
-    if((end != NULL) && (end->reg.ID == ID)){
-        return end;
-    }
-    return NULL;
-}
-
-PONT buscarNome(LISTA* l, PONT* ant){
-    *ant = NULL;
-    PONT end = l->inicio;
-    
-    char nome[60];
-    getchar();
-    printf("Insira o nome do cliente: ");
-    scanf("%[^\n]%*c", nome);
-
-    while(end != NULL){
-        if(strcmp(end->reg.nome, nome) == 0) return end;
- 
-        *ant = end;
-        end = end->prox;
-    }
-    return NULL;
-}
-
-PONT encontrarClienteMenu(LISTA* l, PONT* ant) {
-    printf("1 -- Procurar cliente atrave do nome\n");
-    printf("2 -- Procurar cliente atraves do ID\n");
-
-    int opcao;
-    printf("\n# Informe a opcao desejada: ");
-    scanf("%d", &opcao);
-
-    while(opcao != 1 && opcao != 2) {
-        printf("*Opcao invalida. Tente novamente: ");
-        scanf("%d", &opcao);
-    }
-    
-    PONT end;
-
-    if(opcao == 1) end = buscarNome(l, ant);
-
-    else if(opcao == 2){ // Opcao para procurar a conta pelo ID
-        int ID;
-        printf("\n# Insira o ID do cliente: ");
-        scanf("%d", &ID);
-        end = buscarID(l, ID, ant);
-    }
-    
-    return end;
-}
-
-int inserirDividas(LISTA* l){
+int inserirDivida(LISTA* l){
     int ID, suc;
     double dividas;
 
     printf("Insira o ID do cliente: ");
     scanf("%d", &ID);
 
-    PONT ant, end = buscarID(l, ID, &ant);
+    PONT ant, end = buscarPeloID(l, ID, &ant);
 
     if(end == NULL){
         printf("Cliente nao existente!\n");
@@ -296,13 +304,13 @@ int inserirDividas(LISTA* l){
     return 1;
 }
 
-int quitarDividas(LISTA* l) {
+int quitarDividas(LISTA* l){
     int ID, opcao;
 
     printf("Insira o ID do cliente: ");
     scanf("%d", &ID);
 
-    PONT ant, end = buscarID(l, ID, &ant);
+    PONT ant, end = buscarPeloID(l, ID, &ant);
 
     if(end == NULL){
         printf("ERRO! Cliente nao existente.\n");
@@ -475,9 +483,9 @@ int removerCliente(LISTA* l){
         printf("Insira o ID do cliente: ");
         scanf("%d", &ID);
 
-        i = buscarID(l, ID, &ant);
+        i = buscarPeloID(l, ID, &ant);
     }
-    else if(opcao == 2) i = buscarNome(l, &ant);
+    else if(opcao == 2) i = lerEbuscarNome(l, &ant);
 
     if(i == NULL) {
         printf("ERRO! Falha ao remover, cliente nao existente.\n");
