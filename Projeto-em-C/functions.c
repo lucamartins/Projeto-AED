@@ -463,3 +463,46 @@ int removerCliente(LISTA* l){
     system("pause");
     return 1;
 }
+
+int transferencia(LISTA* l){
+    int id1, id2, valor;
+    printf("Insira o ID do cliente remetente: ");
+    scanf("%d", &id1);
+    printf("Insira o ID do cliente destinatario: ");
+    scanf("%d", &id2);
+
+    PONT ant, remetente = buscarID(l, id1, &ant), destinatario = buscarID(l, id2, &ant);
+
+    if(remetente == NULL && destinatario == NULL) {
+        printf("ID`s nao existente. \n");
+        system("pause");
+        return 0;
+    }
+    else if(remetente == NULL) {
+        printf("ID de remetente nao encontrado. \n");
+        system("pause");
+        return 0;
+    }
+    else if(destinatario == NULL) {
+        printf("ID de destinatario nao encontrado. \n");
+        system("pause");
+        return 0;
+    }
+    printf("Insira o valor que sera transferido: ");
+    scanf("%d", &valor);
+
+    while(valor > remetente->reg.saldo || valor < 0){
+        printf("ERRO! Saldo insuficiente. \n");
+        system("pause");
+        printf("Insira novamente o valor que sera transferido: ");
+        scanf("%d", &valor);
+    }
+
+    remetente->reg.saldo = remetente->reg.saldo - valor;
+    destinatario->reg.saldo = destinatario->reg.saldo + valor;
+
+    printf("Transferencia realizada com sucesso. \n");
+    system("pause");
+
+    return 1;
+}
