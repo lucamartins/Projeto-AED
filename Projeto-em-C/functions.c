@@ -306,64 +306,69 @@ int inserirDivida(LISTA* l){
 }
 
 int quitarDividas(LISTA* l){
-    int ID, opcao;
+    system("cls");
+    printf("= = = = = QUITACAO DE DIVIDA = = = = =\n\n");
 
-    printf("Insira o ID do cliente: ");
-    scanf("%d", &ID);
+    PONT ant, end = encontrarClienteMenu(l, &ant);
 
-    PONT ant, end = buscarPeloID(l, ID, &ant);
-
-    if(end == NULL){
-        printf("ERRO! Cliente nao existente.\n");
+    if(end == NULL) {
+        printf("\n\n@ FALHA: Cliente nao encontrado!\n\n");
         system("pause");
         return 0;
     }
 
-    printf("1 -- Pagar tudo a vista\n");
-    printf("2 -- Pagar uma parcela\n");
-    printf("Digite qual opcao desejada para quitar a sua divida: ");
+    // Pagar divida
+    printf("\n\n# # #\n\n\n");
+    printf("$ Divida total = R$%.2lf\n", end->reg.debitos);
+    printf("1 -- Pagar divida a vista\n");
+    printf("2 -- Pagar uma parcela da divida\n");
+
+    int opcao;
+    printf("\n# Insira a opcao desejada: ");
     scanf("%d", &opcao);
 
     while(opcao != 1 && opcao != 2) {
-        printf("Opcao invalida. Tente novamente: ");
+        printf("\n*Opcao invalida. Tente novamente: ");
         scanf("%d", &opcao);
     }
 
-    while(1){
-        if(opcao == 1){
-            if(end->reg.saldo < end->reg.debitos){
-                printf("Operacao negada! Saldo insuficiente.\n");
-                system("pause");
-                return 0;
-            }
-
-            end->reg.saldo = end->reg.saldo - end->reg.debitos;
-            end->reg.debitos = 0;
-
-            printf("Divida quitada com sucesso.\n");
+    if(opcao == 1){
+        if(end->reg.saldo < end->reg.debitos){
+            printf("\n\n@ FALHA: Operacao negada. Saldo insuficiente!\n\n");
             system("pause");
-            return 1;
+            return 0;
         }
-        else if(opcao == 2){
-            int parcelas;
-            printf("Digite em quantas parcelas voce deseja dividir a divida: ");
-            scanf("%d", &parcelas);
 
-            double aux;
-            aux = end->reg.debitos / parcelas;
+        end->reg.saldo = end->reg.saldo - end->reg.debitos;
+        end->reg.debitos = 0;
 
-            if(end->reg.saldo < aux){
-                printf("Operacao negada! Saldo insuficiente.\n");
-                system("pause");
-                return 0;
-            }
-            end->reg.saldo = end->reg.saldo - aux;
-            end->reg.debitos = end->reg.debitos - aux;
+        printf("\n\n@ Divida quitada com sucesso.\n\n");
+        system("pause");
+        return 1;
+    }
 
-            printf("Parcela da divida quitada com sucesso.\n");
+    else if(opcao == 2){
+        int parcelas;
+        printf("\n# Digite em quantas parcelas voce deseja dividir a divida: ");
+        scanf("%d", &parcelas);
+
+        double aux;
+        aux = end->reg.debitos / parcelas;
+
+        printf("\n$ Saldo da conta: R$%.2lf\n", end->reg.saldo);
+        printf("$ Valor da parcela (R$%.2lf / %d) = R$%.2lf\n", end->reg.debitos, parcelas, aux);
+
+        if(end->reg.saldo < aux){
+            printf("\n\n@ FALHA: Operacao negada. Saldo insuficiente!\n\n");
             system("pause");
-            return 1;
+            return 0;
         }
+        end->reg.saldo = end->reg.saldo - aux;
+        end->reg.debitos = end->reg.debitos - aux;
+
+        printf("\n\n@ Parcela paga com sucesso!\n\n");
+        system("pause");
+        return 1;
     }
 }
 
