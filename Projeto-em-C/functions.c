@@ -381,90 +381,98 @@ int quitarDividas(LISTA* l) {
 }
 
 int atualizarDados(LISTA* l){
-    int ID, suc;
+    system("cls");
+    printf("= = = = = ATUALIZAR DADOS DO CLIENTE = = = = =\n\n");
 
-    printf("Insira o ID do cliente: ");
-    scanf("%d", &ID);
+    PONT ant, end = encontrarClienteMenu(l, &ant);
 
-    PONT ant, i = buscarID(l, ID, &ant);
-    
-    if(i == NULL){
-        printf("ERRO! Cliente nao existente.\n");
+    if(end == NULL) {
+        printf("\n\n@ FALHA: Cliente nao encontrado!\n\n");
         system("pause");
         return 0;
     }
 
-    printf("1 -- CPF\n");
-    printf("2 -- Data de nascimento\n");
-    printf("3 -- Telefone de contato\n");
-    printf("4 -- CEP\n");
+    // Atualizar
+    int suc;
+
+    printf("\n# # #\n");
+    printf("1 -- Atualizar CPF\n");
+    printf("2 -- Atualizar data de nascimento\n");
+    printf("3 -- Atualizar telefone de contato\n");
+    printf("4 -- Atualizar CEP\n");
 
     int n;
-    printf("Digite o numero correspondente ao dado que voce deseja atualizar: ");
+    printf("\n# Insira a opcao desejada: ");
     scanf("%d", &n);
 
     while(n != 1 && n != 2 && n != 3 && n != 4) {
-        printf("Opcao invalida. Digite novamente: ");
+        printf("*Opcao invalida. Digite novamente: ");
         scanf("%d", &n);
     }
 
     if(n == 1){ // Atualizando o cpf
         suc = 0;
+        getchar();
 
         while(suc == 0) {
             char cpf[20];
-            printf("Informe o CPF (FORMATO XXX.XXX.XXX-XX): ");
+            printf("\n# Informe o CPF (FORMATO XXX.XXX.XXX-XX): ");
             scanf("%[^\n]%*c", cpf);
 
             if(strlen(cpf) == 14 && cpf[3] == '.' && cpf[7] == '.' && cpf[11] == '-') {
                 suc = 1;
-                strcpy(i->reg.cpf, cpf);
+                strcpy(end->reg.cpf, cpf);
             }
-            else printf("CPF invalido. Tente novamente\n");
+            else printf("*CPF invalido. Tente novamente\n");
         }
     }
 
     else if(n == 2){ // Atualizar a data de nascimento
         suc = 0;
-
         while(suc == 0) {
             int dia, mes, ano;
-            char barra1, barra2;
-            printf("Digite a sua data de nascimento (FORMATO DD/MM/AAAA): ");
-            scanf("%d %c %d %c %d", &dia, &barra1, &mes, &barra2, &ano);
 
-            if(dia >= 1 && dia <= 31 && mes >= 1 && mes <= 12 && ano >= 0 && barra1 == '/' && barra2 == '/') {
+            printf("\n# Data de nascimento\n");
+            printf("Informe o dia (DD): ");
+            scanf("%d", &dia);
+            printf("Informe o mes (MM): ");
+            scanf("%d", &mes);
+            printf("Informe o ano (AAAA): ");
+            scanf("%d", &ano);
+
+            if(dia >= 1 && dia <= 31 && mes >= 1 && mes <= 12 && ano >= 0) {
                 suc = 1;
-                i->reg.dataNasc.dia = dia;
-                i->reg.dataNasc.mes = mes;
-                i->reg.dataNasc.ano = ano;
+                sprintf(end->reg.dataNasc.dia, "%d", dia);
+                sprintf(end->reg.dataNasc.mes, "%d", mes);
+                sprintf(end->reg.dataNasc.ano, "%d", ano);
             }
-            else printf("Data invalida! Tente novamente\n");
+            else printf("*Data invalida! Tente novamente\n");
         }
     }
 
     else if(n == 3){ // Atualizar o telefone
-        printf("Informe um numero de contato com o codigo de area: ");
-        scanf("%[^\n]%*c", i->reg.telefone);
+        getchar();
+        printf("\n# Informe um numero de contato com o codigo de area ((DDD)NNNNN-NNNN): ");
+        scanf("%[^\n]%*c", end->reg.telefone);
     }
 
     else if(n == 4){ // Atualizar o CEP
         suc = 0;
-
+        getchar();
         while(suc == 0) {
-            printf("Informe o CEP (FORMATO XXXXX-XXX): ");
+            printf("\n# Informe o CEP (FORMATO XXXXX-XXX): ");
             char cep[20];
             scanf("%[^\n]%*c", cep);
 
             if(cep[5] == '-' && strlen(cep) == 9) {
                 suc = 1;
-                strcpy(i->reg.cep, cep);
+                strcpy(end->reg.cep, cep);
             }
-            else printf("CEP invalido. Tente novamente\n");
+            else printf("*CEP invalido. Tente novamente\n");
         }
     }
 
-    printf("Dado atualizado com sucesso!\n");
+    printf("\n\n@ Dados atualizados com sucesso!\n\n");
     system("pause");
     return 1;
 }
