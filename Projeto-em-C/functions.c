@@ -190,7 +190,7 @@ PONT encontrarClienteMenu(LISTA* l, PONT* ant){
 // Funcoes de acesso direto pelo main
 //
 
-int criarCliente(LISTA* l) {
+int criarCliente(LISTA* l){
     system("cls");
     printf("= = = = = CRIAR NOVO CLIENTE = = = = =\n");
 
@@ -271,23 +271,24 @@ void procurarCliente(LISTA* l){
 }
 
 int inserirDivida(LISTA* l){
-    int ID, suc;
-    double dividas;
+    system("cls");
+    printf("= = = = = INSERCAO DE DIVIDA = = = = =\n\n");
 
-    printf("Insira o ID do cliente: ");
-    scanf("%d", &ID);
+    PONT ant, end = encontrarClienteMenu(l, &ant);
 
-    PONT ant, end = buscarPeloID(l, ID, &ant);
-
-    if(end == NULL){
-        printf("Cliente nao existente!\n");
+    if(end == NULL) {
+        printf("\n\n@ FALHA: Cliente nao encontrado!\n\n");
         system("pause");
         return 0;
     }
 
+    // Inserir divida
+    int ID, suc;
+    double dividas;
+
     suc = 0;
     while(suc == 0){
-        printf("Insira o valor de dividas (numero positivo): ");
+        printf("\n# Insira o valor da divida: ");
         scanf("%lf", &dividas);
 
         if(dividas < 0){
@@ -299,7 +300,7 @@ int inserirDivida(LISTA* l){
         }
     }
 
-    printf("Divida inserida com suceso!\n");
+    printf("\n\n@ Divida inserida com suceso!\n\n");
     system("pause");
     return 1;
 }
