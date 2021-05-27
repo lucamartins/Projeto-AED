@@ -536,32 +536,31 @@ int transferencia(LISTA* l){
 }
 
 int deposito(LISTA* l){
-    int valor, ID;
-    printf("Insira o ID do cliente: ");
-    scanf("%d", &ID);
+    system("cls");
+    printf("= = = = = DEPOSITO = = = = =\n\n");
 
-    PONT ant, end = buscarID(l, ID, &ant);
+    PONT ant, end = encontrarClienteMenu(l, &ant);
 
-    if(end == NULL){
-        printf("ERRO! Cliente nao existente. \n");
+    if(end == NULL) {
+        printf("\n\n@ FALHA: Cliente nao encontrado!\n\n");
         system("pause");
         return 0;
     }
 
-    printf("Insira o valor a ser depositado: ");
-    scanf("%d", &valor);
+    double valor;
+    printf("\n# Insira o valor a ser depositado: ");
+    scanf("%lf", &valor);
 
     while(valor < 0){
-        printf("Valor negativo! \n");
-        printf("Insira novamente o valor a ser depositado: ");
-        scanf("%d", &valor);
+        printf("\n*FALHA: Valor negativo!\n");
+        printf("\n# Insira novamente o valor a ser depositado: ");
+        scanf("%lf", &valor);
     }
 
     end->reg.saldo = end->reg.saldo + valor;
 
-    printf("Deposito realizado com sucesso. \n");
+    printf("\n\n@ Deposito realizado com sucesso!\n\n");
     system("pause");
-
     return 1;
 }
 
