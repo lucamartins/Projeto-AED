@@ -148,24 +148,28 @@ void preencherDadosCliente(LISTA* l, PONT i) {
 }
 
 void exibirClientes(LISTA* l){
+    system("cls");
+    printf("= = = = = LISTA DE CLIENTES = = = = =\n");
+
     PONT end = l->inicio;
 
+    if(end == NULL) printf("\n * NAO HA CLIENTES!\n");
+
     while(end != NULL){
-        printf("=================================\n");
-        printf("Codigo de ID: %d\n", end->reg.ID);
-        printf("Nome: %s\n", end->reg.nome);
-        printf("CPF: %s\n", end->reg.cpf);
-        printf("Data de Nascimento: %d/%d/%d\n", end->reg.dataNasc.dia, end->reg.dataNasc.mes, end->reg.dataNasc.ano);
-        printf("CEP: %s\n", end->reg.cep);
-        printf("Telefone: %s\n", end->reg.telefone);
-        printf("Saldo atual: R$%.2lf\n", end->reg.saldo);
-        printf("Debitos: R$%.2lf\n", end->reg.debitos);
-        printf("\n\n");
+        printf("\n- Codigo ID: %d\n", end->reg.ID);
+        printf("- Nome: %s\n", end->reg.nome);
+        printf("- CPF: %s\n", end->reg.cpf);
+        printf("- Data de Nascimento: %02s/%02s/%04s\n", end->reg.dataNasc.dia, end->reg.dataNasc.mes, end->reg.dataNasc.ano);
+        printf("- CEP: %s\n", end->reg.cep);
+        printf("- Telefone: %s\n", end->reg.telefone);
+        printf("- Saldo atual: R$%.2lf\n", end->reg.saldo);
+        printf("- Debitos: R$%.2lf\n", end->reg.debitos);
+        printf("\n= = = = = = = = = = = = = = = = = =\n");
 
         end = end->prox;   
     }
 
-    printf("=================================\n\n");
+    printf("\n\n@ Lista de clientes gerada com sucesso!\n\n");
     system("pause");
 }
 
