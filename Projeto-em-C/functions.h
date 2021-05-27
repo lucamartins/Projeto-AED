@@ -1,7 +1,7 @@
 typedef struct {
-    char dia;
-    char mes;
-    char ano;
+    char dia[4];
+    char mes[4];
+    char ano[6];
 } NASC;
 
 typedef struct {
@@ -27,26 +27,42 @@ typedef struct {
     int cntID;
 } LISTA;
 
+//
+// Funcoes auxiliares do programa
+//
+
 void inicializarLista(LISTA* l);
 
 PONT buscarProxEndLivre(LISTA* l, PONT* ant);
 
+PONT buscarPeloID(LISTA* l, int ID, PONT* ant);
+
+PONT lerEbuscarNome(LISTA* l, PONT* ant);
+
 void preencherDadosCliente(LISTA* l, PONT i);
 
-PONT buscarID(LISTA* l, int ID, PONT* ant);
+PONT encontrarClienteMenu(LISTA* l, PONT* ant);
 
-PONT buscarNome(LISTA* l, PONT* ant);
+//
+// Funcoes de acesso direto pela main
+//
 
 int criarCliente(LISTA* l); // op1
 
 void exibirClientes(LISTA* l); // op2
 
-void exibirConta(LISTA* l); // op3
+void procurarCliente(LISTA* l); // op3
 
 int atualizarDados(LISTA* l); // op4
 
-int inserirDividas(LISTA* l); // op5
+int removerCliente(LISTA* l); // op5
 
-int quitarDividas(LISTA* l); // op6
+int inserirDivida(LISTA* l); // op6
 
-int removerCliente(LISTA* l); // op7
+int quitarDividas(LISTA* l); // op7
+
+int transferencia(LISTA* l); // op8
+
+int deposito(LISTA* l); // op9
+
+int saque(LISTA* l); // op10
