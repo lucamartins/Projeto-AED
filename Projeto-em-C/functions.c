@@ -173,59 +173,33 @@ void exibirClientes(LISTA* l){
     system("pause");
 }
 
-void exibirConta(LISTA* l){
-    printf("1 - Nome\n");
-    printf("2 - ID\n");
-    
-    printf("Digite como deseja acessar a conta: ");
-    int opcao;
-    scanf("%d", &opcao);
+void procurarCliente(LISTA* l){
+    system("cls");
+    printf("= = = = = PROCURAR CLIENTE = = = = =\n\n");
 
-    while(opcao != 1 && opcao != 2) {
-        printf("Opcao invalida. Tente novamente: ");
-        scanf("%d", &opcao);
-    }
-    
-    if(opcao == 1){ // Opcao para procurar a conta pelo nome
-        PONT ant, end = buscarNome(l, &ant);
-        
-        if(end == NULL){
-            printf("Erro! Cliente nao existente.\n");
-        }
-        else{
-            printf("Detalhes da conta desejada: \n\n");
-            printf("Codigo de ID: %d\n", end->reg.ID);
-            printf("Nome: %s\n", end->reg.nome);
-            printf("CPF: %s\n", end->reg.cpf);
-            printf("Data de Nascimento: %d/%d/%d\n", end->reg.dataNasc.dia, end->reg.dataNasc.mes, end->reg.dataNasc.ano);
-            printf("CEP: %s\n", end->reg.cep);
-            printf("Telefone: %s\n", end->reg.telefone);
-            printf("Saldo atual: R$%.2lf\n", end->reg.saldo);
-            printf("Debitos: R$%.2lf\n\n", end->reg.debitos);
-        }
-    }
-    else if(opcao == 2){ // Opcao para procurar a conta pelo ID
-        int ID;
-        printf("Insira o ID do cliente: ");
-        scanf("%d", &ID);
-        PONT ant, end = buscarID(l, ID, &ant);
-        
-        if(end == NULL){
-            printf("ERRO! Cliente nao existente.\n");
-        }
-        else{
-            printf("Detalhes da conta desejada: \n\n");
-            printf("Codigo de ID: %d\n", end->reg.ID);
-            printf("Nome: %s\n", end->reg.nome);
-            printf("CPF: %s \n", end->reg.cpf);
-            printf("Data de Nascimento: %d/%d/%d\n", end->reg.dataNasc.dia, end->reg.dataNasc.mes, end->reg.dataNasc.ano);
-            printf("CEP: %s \n", end->reg.cep);
-            printf("Telefone: %s \n", end->reg.telefone);
-            printf("Saldo atual: R$%.2lf\n", end->reg.saldo);
-            printf("Debitos: R$%.2lf\n\n", end->reg.debitos);
-        }
+    PONT ant, end = encontrarClienteMenu(l, &ant);
+
+    if(end == NULL) {
+        printf("\n\n@ FALHA: Cliente nao encontrado!\n\n");
+        system("pause");
+        return;
     }
 
+    else {
+        printf("\n# Detalhes da conta procurada: \n\n");
+        printf("= = = = = = = = = = = = = = = = = =\n\n");
+        printf("- Codigo ID: %d\n", end->reg.ID);
+        printf("- Nome: %s\n", end->reg.nome);
+        printf("- CPF: %s\n", end->reg.cpf);
+        printf("- Data de Nascimento: %02s/%02s/%04s\n", end->reg.dataNasc.dia, end->reg.dataNasc.mes, end->reg.dataNasc.ano);
+        printf("- CEP: %s\n", end->reg.cep);
+        printf("- Telefone: %s\n", end->reg.telefone);
+        printf("- Saldo atual: R$%.2lf\n", end->reg.saldo);
+        printf("- Debitos: R$%.2lf\n", end->reg.debitos);
+        printf("\n= = = = = = = = = = = = = = = = = =\n");
+    }
+
+    printf("\n\n");
     system("pause");
 }
 
