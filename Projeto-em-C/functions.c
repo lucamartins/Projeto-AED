@@ -536,3 +536,39 @@ int deposito(LISTA* l){
 
     return 1;
 }
+
+int saque(LISTA* l){
+    int valor, ID;
+    printf("Insira o ID do cliente: ");
+    scanf("%d", &ID);
+
+    PONT ant, end = buscarID(l, ID, &ant);
+
+    if(end == NULL){
+        printf("ERRO! Cliente nao existente. \n");
+        system("pause");
+        return 0;
+    }
+
+    printf("Insira o valor a ser sacado: ");
+    scanf("%d", &valor);
+
+    while(valor < 0){
+        printf("Valor negativo! \n");
+        printf("Insira novamente o valor a ser sacado: ");
+        scanf("%d", &valor);
+    }
+
+    if(valor > end->reg.saldo){
+        printf("Saldo insuficiente. \n");
+        system("pause");
+        return 0;
+    }
+
+    end->reg.saldo = end->reg.saldo - valor;
+
+    printf("Deposito realizado com sucesso. \n");
+    system("pause");
+
+    return 1;
+}
