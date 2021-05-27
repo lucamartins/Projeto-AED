@@ -6,4 +6,4 @@ Integrantes do Grupo:
 - José Carlos Lee
 - Luca Santos Martins
 
-Por fim, decidimos fazer o projeto tanto em Javascript utilizando React, quanto em C como inicialmente proposto.
+*Obs: Por fim, decidimos fazer o projeto tanto em Javascript utilizando React, quanto em C como inicialmente proposto.
