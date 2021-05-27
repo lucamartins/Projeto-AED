@@ -492,45 +492,46 @@ int removerCliente(LISTA* l){
 }
 
 int transferencia(LISTA* l){
-    int id1, id2, valor;
-    printf("Insira o ID do cliente remetente: ");
-    scanf("%d", &id1);
-    printf("Insira o ID do cliente destinatario: ");
-    scanf("%d", &id2);
+    system("cls");
+    printf("= = = = = TRANSFERENCIA = = = = =\n");
 
-    PONT ant, remetente = buscarID(l, id1, &ant), destinatario = buscarID(l, id2, &ant);
+    printf("\n# # # Cliente REMETENTE:\n");
+    PONT ant, remetente = encontrarClienteMenu(l, &ant);
+
+    printf("\n\n# # # Cliente DESTINATARIO:\n");
+    PONT destinatario = encontrarClienteMenu(l, &ant);
 
     if(remetente == NULL && destinatario == NULL) {
-        printf("ID`s nao existente. \n");
+        printf("\n\n@ FALHA: Ambos clientes nao encontrados!\n\n");
         system("pause");
         return 0;
     }
     else if(remetente == NULL) {
-        printf("ID de remetente nao encontrado. \n");
+        printf("\n\n@ FALHA: Remetente nao encontrado!\n\n");
         system("pause");
         return 0;
     }
     else if(destinatario == NULL) {
-        printf("ID de destinatario nao encontrado. \n");
+        printf("\n\n@ FALHA: Destinatario nao encontrado!\n\n");
         system("pause");
         return 0;
     }
-    printf("Insira o valor que sera transferido: ");
-    scanf("%d", &valor);
 
-    while(valor > remetente->reg.saldo || valor < 0){
-        printf("ERRO! Saldo insuficiente. \n");
+    double valor;
+    printf("\n\n# # # Insira o valor que sera transferido: ");
+    scanf("%lf", &valor);
+
+    if(valor > remetente->reg.saldo || valor <= 0){
+        printf("\n\n@ FALHA: Saldo insuficiente para realizar transferencia ou valor invalido!\n\n");
         system("pause");
-        printf("Insira novamente o valor que sera transferido: ");
-        scanf("%d", &valor);
+        return 0;
     }
 
     remetente->reg.saldo = remetente->reg.saldo - valor;
     destinatario->reg.saldo = destinatario->reg.saldo + valor;
 
-    printf("Transferencia realizada com sucesso. \n");
+    printf("\n\n@ Transferencia realizada com sucesso!\n\n");
     system("pause");
-
     return 1;
 }
 
