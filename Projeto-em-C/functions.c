@@ -47,7 +47,7 @@ PONT lerEbuscarNome(LISTA* l, PONT* ant){
     
     char nome[60];
     getchar();
-    printf("Insira o nome do cliente: ");
+    printf("\n# Informe o nome do cliente: ");
     scanf("%[^\n]%*c", nome);
 
     while(end != NULL){
@@ -187,7 +187,7 @@ PONT encontrarClienteMenu(LISTA* l, PONT* ant){
 }
 
 //
-// Funcoes de acesso direto pelo main
+// Funcoes de acesso direto pela main
 //
 
 int criarCliente(LISTA* l){
