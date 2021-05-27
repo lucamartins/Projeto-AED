@@ -1,0 +1,11 @@
+- Para rodar o programa, é necessário estar com NodeJS instalado em seu computador (https://nodejs.org/en/). Além disso, após instalado o NodeJS, é necessário instalar a dependência "Yarn", através da seguinte linha de comando no terminal:
+
+npm install -g yarn
+
+- Feito isso, mova o diretório do seu terminal para a pasta "/Projeto-em-JS-React" e agora execute:
+
+yarn install
+
+- Serão instalados alguns pacotes, aguarde. E por fim, execute:
+
+yarn start
