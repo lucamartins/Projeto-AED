@@ -240,6 +240,33 @@ PONT buscarNome(LISTA* l, PONT* ant){
     return NULL;
 }
 
+PONT encontrarClienteMenu(LISTA* l, PONT* ant) {
+    printf("1 -- Procurar cliente atrave do nome\n");
+    printf("2 -- Procurar cliente atraves do ID\n");
+
+    int opcao;
+    printf("\n# Informe a opcao desejada: ");
+    scanf("%d", &opcao);
+
+    while(opcao != 1 && opcao != 2) {
+        printf("*Opcao invalida. Tente novamente: ");
+        scanf("%d", &opcao);
+    }
+    
+    PONT end;
+
+    if(opcao == 1) end = buscarNome(l, ant);
+
+    else if(opcao == 2){ // Opcao para procurar a conta pelo ID
+        int ID;
+        printf("\n# Insira o ID do cliente: ");
+        scanf("%d", &ID);
+        end = buscarID(l, ID, ant);
+    }
+    
+    return end;
+}
+
 int inserirDividas(LISTA* l){
     int ID, suc;
     double dividas;
