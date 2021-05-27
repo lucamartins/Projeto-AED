@@ -470,40 +470,28 @@ int atualizarDados(LISTA* l){
 }
 
 int removerCliente(LISTA* l){
-    printf("1 -- Remover cliente atraves do ID\n");
-    printf("2 -- Remover cliente atraves nome\n");
-    printf("Digite a opcao desejada: ");
+    system("cls");
+    printf("= = = = = REMOVER CLIENTE = = = = =\n\n");
 
-    int opcao;
-    scanf("%d", &opcao);
+    PONT ant, end = encontrarClienteMenu(l, &ant);
 
-    while(opcao != 1 && opcao != 2) {
-        printf("Opcao invalida. Digite novamente: ");
-        scanf("%d", &opcao);
-    }
-
-    PONT i, ant;
-    
-    if(opcao == 1){
-        int ID;
-        printf("Insira o ID do cliente: ");
-        scanf("%d", &ID);
-
-        i = buscarPeloID(l, ID, &ant);
-    }
-    else if(opcao == 2) i = lerEbuscarNome(l, &ant);
-
-    if(i == NULL) {
-        printf("ERRO! Falha ao remover, cliente nao existente.\n");
+    if(end == NULL) {
+        printf("\n\n@ FALHA: Cliente inexistente!\n\n");
         system("pause");
         return 0;
     }
 
-    if(ant == NULL) l->inicio = i->prox;
-    else ant->prox = i->prox;
+    if(end->reg.saldo > 0 || end->reg.debitos > 0) {
+        printf("\n\n@ FALHA: Nao eh possivel excluir conta com saldo ou com debitos abertos.\n\n");
+        system("pause");
+        return 0;
+    }
 
-    free(i);
-    printf("Cliente removido com sucesso!\n");
+    if(ant == NULL) l->inicio = end->prox;
+    else ant->prox = end->prox;
+
+    free(end);
+    printf("\n\n@ Cliente removido com sucesso!\n\n");
     system("pause");
     return 1;
 }
