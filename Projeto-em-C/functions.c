@@ -24,9 +24,12 @@ PONT buscarProxEndLivre(LISTA* l, PONT* ant) {
 }
 
 int criarCliente(LISTA* l) {
-    PONT ant, i = buscarProxEndLivre(l, &ant);
+    system("cls");
+    printf("= = = = = CRIAR NOVO CLIENTE = = = = =\n");
 
+    PONT ant, i = buscarProxEndLivre(l, &ant);
     i = (PONT) malloc(sizeof(ELEMENTO));
+
     preencherDadosCliente(l, i);    
 
     if(ant == NULL) {
@@ -38,13 +41,14 @@ int criarCliente(LISTA* l) {
         ant->prox = i;
     }
 
-    printf("Cliente criado com sucesso!\n");
+    printf("\n\n@ Cliente criado com sucesso!\n\n");
     system("pause");
 
     return i->reg.ID;
 }
 
 void preencherDadosCliente(LISTA* l, PONT i) {
+    // Variavel de controle para sair do while loop
     int suc;
 
     // ID
@@ -52,31 +56,46 @@ void preencherDadosCliente(LISTA* l, PONT i) {
     l->cntID++;
 
     // Nome
-    printf("Informe o seu nome completo: ");
+    printf("\n# Nome completo: ");
     scanf("%[^\n]%*c", i->reg.nome);
 
     // Data de nascimento
-    printf("Digite a sua data de nascimento (FORMATO DD/MM/AAAA): ");
     suc = 0;
     while(suc == 0) {
         int dia, mes, ano;
-        char barra1, barra2;
-        scanf("%d %c %d %c %d", &dia, &barra1, &mes, &barra2, &ano);
-        if(dia >= 1 && dia <= 31 && mes >= 1 && mes <= 12 && ano >= 0 && barra1 == '/' && barra2 == '/') {
+
+        printf("\n# Data de nascimento\n");
+        printf("- Informe o dia (DD): ");
+        scanf("%d", &dia);
+        printf("- Informe o mes (MM): ");
+        scanf("%d", &mes);
+        printf("- Informe o ano (AAAA): ");
+        scanf("%d", &ano);
+
+        if(dia >= 1 && dia <= 31 && mes >= 1 && mes <= 12 && ano >= 0) {
             suc = 1;
-            i->reg.dataNasc.dia = dia;
-            i->reg.dataNasc.mes = mes;
-            i->reg.dataNasc.ano = ano;
+            sprintf(i->reg.dataNasc.dia, "%d", dia);
+            sprintf(i->reg.dataNasc.mes, "%d", mes);
+            sprintf(i->reg.dataNasc.ano, "%d", ano);
         }
-        else {
-            printf("Data invalida. Tente novamente\n");
-        }
+        else printf("*Data invalida! Tente novamente\n");
     }
 
     // Saldo
     suc = 0;
     while(suc == 0) {
-        printf("Informe o valor, a partir de 0, que sera depositado no ato de criacao da conta: ");
+        printf("\n# Digite '1' caso algum valor sera depositado no ato de criacao da conta ou '0' caso contrario: ");
+        int ctr;
+        scanf("%d", &ctr);
+
+        while(ctr != 0 && ctr != 1) {
+            printf("*FALHA: Opcao incorreta. Digite novamente: ");
+            scanf("%d", &ctr);
+        }
+
+        if(ctr == 0) break;
+
+        printf("- Informe o valor: ");
         double valor;
         scanf("%lf", &valor);
 
@@ -84,20 +103,18 @@ void preencherDadosCliente(LISTA* l, PONT i) {
             suc = 1;
             i->reg.saldo = valor;
         }
-        else {
-            printf("Valor invalido. Tente novamente\n");
-        }
+        else printf("*Valor invalido! Tente novamente.\n");
     }
     
-    // Debitos
+    // Debitos (dividas)
     i->reg.debitos = 0;
 
     // CPF
     suc = 0;
+    getchar();
     while(suc == 0) {
         char cpf[20];
-        printf("Informe o CPF (FORMATO XXX.XXX.XXX-XX): ");
-        getchar();
+        printf("\n# Informe o CPF (XXX.XXX.XXX-XX): ");
         scanf("%[^\n]%*c", cpf);
 
         if(strlen(cpf) == 14 && cpf[3] == '.' && cpf[7] == '.' && cpf[11] == '-') {
@@ -105,14 +122,14 @@ void preencherDadosCliente(LISTA* l, PONT i) {
             strcpy(i->reg.cpf, cpf);
         }
         else {
-            printf("CPF invalido. Tente novamente\n");
+            printf("*CPF invalido. Tente novamente\n");
         }
     }
 
     // Endereco (CEP)
     suc = 0;
     while(suc == 0) {
-        printf("Informe o CEP (FORMATO XXXXX-XXX): ");
+        printf("\n# Informe o CEP (XXXXX-XXX): ");
         char cep[20];
         scanf("%[^\n]%*c", cep);
 
@@ -121,12 +138,12 @@ void preencherDadosCliente(LISTA* l, PONT i) {
             strcpy(i->reg.cep, cep);
         }
         else {
-            printf("CEP invalido. Tente novamente\n");
+            printf("*CEP invalido. Tente novamente\n");
         }
     }
 
     // Telefone
-    printf("Informe um numero de contato com o codigo de area: ");
+    printf("\n# Informe um numero de contato com o codigo de area ((DDD)NNNNN-NNNN): ");
     scanf("%[^\n]%*c", i->reg.telefone);
 }
 
